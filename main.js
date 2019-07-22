@@ -1,25 +1,34 @@
 var game = new Phaser.Game(480, 320, Phaser.CANVAS, null, {preload: preload, create: create,
 update: update});
 
+//sets the ball, paddle and bricks
 var ball;
 var paddle;
 var bricks;
+
+//sets the info for creating new bricks and status of current bricks
 var newBrick;
 var brickInfo;
 
+//displays score text
 var scoreText;
 //sets score to zero at start of game
 var score = 0;
 
 //sets number of lives player has at the start of the game
 var lives = 3;
+//displays lives text
 var livesText;
+//updates if a life is a lost
 var lifesLostText;
 
+//detects if a player is playing or not
 var playing = false;
+//start button
 var startButton;
 
 function preload() {
+	//sets up the playing field parameters
 	game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 	game.scale.pageAlignHorizontally = true;
 	game.scale.pageAlsignVertically = true;
@@ -35,17 +44,19 @@ function preload() {
 }
 
 function create() {
+	//starts the Phaser physics system
 	game.physics.startSystem(Phaser.Physics.ARCADE);
     game.physics.arcade.checkCollision.down = false;
-		
+		//sets the physics parameters
     ball = game.add.sprite(game.world.width*0.5, game.world.height-25, 'ball');
     ball.anchor.set(0.5);
+	//sets the balls physics
     game.physics.enable(ball, Phaser.Physics.ARCADE);
     ball.body.collideWorldBounds = true;
     ball.body.bounce.set(1);
     ball.checkWorldBounds = true;
     ball.events.onOutOfBounds.add(ballLeaveScreen, this);
-
+//sets the paddle physics
     paddle = game.add.sprite(game.world.width*0.5, game.world.height-5, 'paddle');
     paddle.anchor.set(0.5,1);
     game.physics.enable(paddle, Phaser.Physics.ARCADE);
