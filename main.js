@@ -62,8 +62,9 @@ function create() {
     game.physics.enable(paddle, Phaser.Physics.ARCADE);
     paddle.body.immovable = true;
 	
-	initBricks();
 	
+	initBricks();
+	//adds the score and lives text
 	scoreText = game.add.text(5,5, 'Score: 0', { font: '18px Tahoma', fill: '#8E35EF' });
 	livesText = game.add.text(game.world.width-5, 5, 'Lives:' +lives, { font: '18px Tahoma', fill: '#8E35EF' });
 	livesText.anchor.set(1,0);
@@ -71,12 +72,15 @@ function create() {
 	lifeLostText.anchor.set(0.5);
 	lifeLostText.visible = false;
 	
+	//adds the start button
 	 startButton = game.add.button(game.world.width*0.5, game.world.height*0.5, 'button', startGame, this, 1, 0, 2);
     startButton.anchor.set(0.5);
 }
 
 function update() {
+	//adds the physics collision between the paddle and ball
 	game.physics.arcade.collide(paddle, ball);
+	//adds the physics collision between the ball and bricks
 	game.physics.arcade.collide(ball,bricks, ballHitBrick);
 	
 if(playing){
@@ -107,7 +111,9 @@ function ballHitBrick(ball, brick) {
 }
 
 function startGame() {
+//destroys the start button
     startButton.destroy();
+	//allows the ball to start moving around the screen
     ball.body.velocity.set(200, -200);
     playing = true;
 }
@@ -115,8 +121,10 @@ function startGame() {
 function ballLeaveScreen() {
 	 lives--;
     if(lives) {
+	    //updates lives text if ball leaves screen
         livesText.setText('Lives: '+lives);
         lifeLostText.visible = true;
+	    //resets ball and paddle
         ball.reset(game.world.width*0.5, game.world.height-25);
         paddle.reset(game.world.width*0.5, game.world.height-5);
         game.input.onDown.addOnce(function(){
@@ -133,6 +141,7 @@ else {
 }
 
 function initBricks() {
+	//brick info
     brickInfo = {
         width: 50,
         height: 20,
@@ -146,6 +155,7 @@ function initBricks() {
         },
         padding: 10
     }
+	//sets up the formation of the bricks
     bricks = game.add.group();
     for(c=0; c<brickInfo.count.col; c++) {
         for(r=0; r<brickInfo.count.row; r++) {
